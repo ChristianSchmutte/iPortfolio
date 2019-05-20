@@ -18,18 +18,33 @@ protocol ViewModelDelegate: class {
 }
 
 final class ViewModel {
-    weak var delegate: ViewModelDelegate?
+    weak var delegate: ViewModelDelegate? {
+        didSet {
+            self.getStocks()
+            self.startTimer()
+        }
+    }
+    private var updateTimer: Timer?
     
     init() {
+        
     }
     
-    func getStocks(search: SearchFor = .all) {
+    private func getStocks() {
         let network = NetworkController(delegate: delegate!)
-        
+        network.fetch()
         
         
         // IF search != "all" call with param, else without params
 //        network.fetch()
+    }
+    
+    private func startTimer() {
+        updateTimer?.invalidate()
+        
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {[weak self] _ in
+            self?.getStocks()
+        }
     }
     
 }

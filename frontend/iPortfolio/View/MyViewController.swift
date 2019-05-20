@@ -12,7 +12,10 @@ class MyViewController: UITableViewController, ViewModelDelegate {
     
     public var stockArray = [Stock]() {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+//            tableView.reloadData()
         }
     }
 //    public var stockDict: [String : Double] = [:] {
@@ -40,12 +43,18 @@ class MyViewController: UITableViewController, ViewModelDelegate {
         super.viewDidLoad()
         setUpTableView()
         viewModel.delegate = self as ViewModelDelegate
-        viewModel.getStocks()
+        
+        
         
         // Do any additional setup after loading the view.
     }
     
     func setUpTableView() {
+        tableView.backgroundColor = UIColor.init(displayP3Red: 200.0, green: 200.0, blue: 200.0, alpha: 1.0)
+        title = "iPortfolio"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        
         
     }
 
@@ -60,15 +69,19 @@ extension MyViewController {
         
         return stockArray.count
     }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75.0
+    }
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath)
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        cell.textLabel?.font = UIFont(name: "Avenir Next", size: 22.0)
         let stock = stockArray[indexPath.row]
-        cell.textLabel?.text = "\(stock.companyName) : \(stock.price)"
-        
-        
-        
-        
+        cell.textLabel?.text = "\(stock.companyName)"
+        let stockPrice = String(format: "%.2f", stock.price)
+        cell.detailTextLabel?.text = stockPrice
+        cell.accessoryType = .disclosureIndicator
         // NEXT BREAK POINT
         return cell
     }
