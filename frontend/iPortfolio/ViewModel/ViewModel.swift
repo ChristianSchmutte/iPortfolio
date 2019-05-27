@@ -6,9 +6,8 @@
 //  Copyright © 2019 Christian Schmutte. All rights reserved.
 //
 
-enum SearchFor {
-    case all
-    case search(with: String)
+struct Random {
+    var name: String
 }
 
 import Foundation
@@ -42,7 +41,7 @@ final class ViewModel {
     private func startTimer() {
         updateTimer?.invalidate()
         
-        updateTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {[weak self] _ in
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {[weak self] _ in
             self?.getStocks()
         }
     }

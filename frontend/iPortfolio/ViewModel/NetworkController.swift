@@ -29,12 +29,13 @@ class NetworkController {
         let request = URLRequest(url: finalURL)
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let delegate = self.delegate else { fatalError("No delegate")}
-            
-            do {
-                delegate.stockArray = try JSONDecoder().decode([Stock].self, from: data!)
-                
-            } catch {
-                print(error)
+            if let data = data {
+                do {
+                    let mystockArray = try JSONDecoder().decode([Stock].self, from: data)
+                    delegate.stockArray = mystockArray
+                } catch {
+                    print(error)
+                }
             }
         }.resume()
     }

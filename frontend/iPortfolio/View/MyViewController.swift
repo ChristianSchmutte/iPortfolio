@@ -18,6 +18,7 @@ class MyViewController: UITableViewController, ViewModelDelegate {
 //            tableView.reloadData()
         }
     }
+    var someOptional: Int?
 //    public var stockDict: [String : Double] = [:] {
 //        didSet {
 ////            print(stockDict.count)
@@ -40,6 +41,7 @@ class MyViewController: UITableViewController, ViewModelDelegate {
     
     
     override func viewDidLoad() {
+
         super.viewDidLoad()
         setUpTableView()
         viewModel.delegate = self as ViewModelDelegate
@@ -78,7 +80,7 @@ extension MyViewController {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.font = UIFont(name: "Avenir Next", size: 22.0)
         let stock = stockArray[indexPath.row]
-        cell.textLabel?.text = "\(stock.companyName)"
+        cell.textLabel?.text = "\(stock.tickerSymbol)"
         let stockPrice = String(format: "%.2f", stock.price)
         cell.detailTextLabel?.text = stockPrice
         cell.accessoryType = .disclosureIndicator
